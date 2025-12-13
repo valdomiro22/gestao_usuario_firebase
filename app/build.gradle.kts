@@ -5,6 +5,10 @@ plugins {
 
     // Para Firebase
     id("com.google.gms.google-services")
+
+    // Hilt
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -47,6 +51,12 @@ android {
 dependencies {
     // Para Firebase
     implementation(platform("com.google.firebase:firebase-bom:34.7.0"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
+
+    // Hilt
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
 
 
     implementation(libs.androidx.core.ktx)
