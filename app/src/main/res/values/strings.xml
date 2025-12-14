@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">GestaoUsuarioFirebaseAuth</string>
+    <string name="cadastro">Cadastro</string>
+    <string name="cadastrar">Cadastrar</string>
+    <string name="cadastre_se">Cadastre-se</string>
+    <string name="login">Login</string>
+    <string name="logar">Logar</string>
+    <string name="label_nome">Nome</string>
+    <string name="placeholder_nome">João</string>
+    <string name="label_sobrenome">Sobrenome</string>
+    <string name="placeholder_sobrenome">Sobrenome</string>
+    <string name="label_email">Email</string>
+    <string name="placeholder_email">joao.santos@test.com</string>
+    <string name="laber_senha">Senha</string>
+    <string name="placeholder_senha">Ex: fiT%s32d</string>
+    <string name="laber_confirmar_senha">Confirmar Senha</string>
+
+    <!-- Cadastro Screen -->
+    <string name="info_ja_tem_conta">Já possui uma conta?</string>
 </resources>

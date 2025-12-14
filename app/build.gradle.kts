@@ -19,7 +19,7 @@ android {
 
     defaultConfig {
         applicationId = "com.santos.valdomiro.gestaousuariofirebaseauth"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -56,7 +56,12 @@ dependencies {
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.51.1")
+    implementation(libs.androidx.compose.material3.lint)
+    implementation(libs.androidx.compose.ui.text)
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+
+//    implementation("androidx.compose.material:material-icons-core:1.7.4")
+    implementation("androidx.compose.material:material-icons-extended")
 
 
     implementation(libs.androidx.core.ktx)

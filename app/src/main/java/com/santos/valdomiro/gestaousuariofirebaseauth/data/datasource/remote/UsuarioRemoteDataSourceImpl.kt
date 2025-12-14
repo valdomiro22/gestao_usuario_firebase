@@ -1,0 +1,42 @@
+package com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.remote
+
+import com.google.firebase.firestore.FirebaseFirestore
+import com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.UsuarioRemoteDataSource
+import com.santos.valdomiro.gestaousuariofirebaseauth.data.dto.UsuarioDocument
+import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
+
+class UsuarioRemoteDataSourceImpl @Inject constructor(
+    private val firestore: FirebaseFirestore
+) : UsuarioRemoteDataSource {
+    val usuarioCollection = "usuarios"
+
+    override suspend fun insertUser(usuario: UsuarioDocument) {
+        if (usuario.id.isBlank()) {
+            throw IllegalArgumentException("Erro: Tentativa de salvar usuario sem UID do Firebase Auth")
+        }
+
+        firestore
+            .collection(usuarioCollection)
+            .document(usuario.id)
+            .set(usuario)
+            .await()
+
+    }
+
+    override suspend fun updateUser(id: String, usuario: UsuarioDocument) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getUser(id: String): UsuarioDocument {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteUser(id: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getAllUsers(): List<UsuarioDocument> {
+        TODO("Not yet implemented")
+    }
+}
