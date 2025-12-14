@@ -63,6 +63,9 @@ dependencies {
 //    implementation("androidx.compose.material:material-icons-core:1.7.4")
     implementation("androidx.compose.material:material-icons-extended")
 
+    // Para navegação
+    implementation("androidx.navigation:navigation-compose:2.9.6")
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

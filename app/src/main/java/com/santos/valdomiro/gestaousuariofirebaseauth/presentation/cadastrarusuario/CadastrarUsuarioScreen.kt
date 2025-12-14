@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -32,7 +31,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -44,7 +42,10 @@ import com.santos.valdomiro.gestaousuariofirebaseauth.ui.theme.Dimens
 import com.santos.valdomiro.gestaousuariofirebaseauth.ui.theme.GestaoUsuarioFirebaseAuthTheme
 
 @Composable
-fun CadastrarUsuarioScreen(modifier: Modifier = Modifier) {
+fun CadastrarUsuarioScreen(
+    irParaLogin: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     var nome by remember { mutableStateOf("") }
     var sobrenome by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -173,7 +174,7 @@ fun CadastrarUsuarioScreen(modifier: Modifier = Modifier) {
             Text(stringResource(R.string.info_ja_tem_conta))
 
             TextButton(
-                onClick = {}
+                onClick = { irParaLogin() }
             ) {
                 Text(text = stringResource(R.string.logar))
             }
@@ -185,6 +186,6 @@ fun CadastrarUsuarioScreen(modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     GestaoUsuarioFirebaseAuthTheme {
-        CadastrarUsuarioScreen()
+        CadastrarUsuarioScreen({})
     }
 }

@@ -2,7 +2,6 @@ package com.santos.valdomiro.gestaousuariofirebaseauth.presentation.login
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -17,16 +16,15 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lint.kotlin.metadata.Visibility
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
-    onLoginClick: (email: String, senha: String) -> Unit = { _, _ -> },
-    onRecuperarSenhaClick: () -> Unit = {},
-    onCadastrarClick: () -> Unit = {}
+    irParaCadastro: () -> Unit
+//    onLoginClick: (email: String, senha: String) -> Unit = { _, _ -> },
+//    onRecuperarSenhaClick: () -> Unit = {},
+//    onCadastrarClick: () -> Unit = {}
 ) {
     var email by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
@@ -112,14 +110,14 @@ fun LoginScreen(
             modifier = Modifier
                 .align(Alignment.End)
                 .padding(top = 8.dp)
-                .clickable { onRecuperarSenhaClick() }
+                .clickable {  }
         )
 
         Spacer(modifier = Modifier.height(32.dp))
 
         // Botão Logar
         Button(
-            onClick = { onLoginClick(email, senha) },
+            onClick = { irParaCadastro() },
             enabled = isFormValid,
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -136,7 +134,7 @@ fun LoginScreen(
             Text(
                 text = "Cadastre-se",
                 color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.clickable { onCadastrarClick() }
+                modifier = Modifier.clickable { irParaCadastro() }
             )
         }
     }
@@ -146,6 +144,6 @@ fun LoginScreen(
 @Composable
 fun LoginScreenPreview() {
     MaterialTheme {
-        LoginScreen()
+        LoginScreen({})
     }
 }

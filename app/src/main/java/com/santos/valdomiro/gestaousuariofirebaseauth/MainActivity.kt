@@ -9,7 +9,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.cadastrarusuario.CadastrarUsuarioScreen
+import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.navigation.AppNavigation
 import com.santos.valdomiro.gestaousuariofirebaseauth.ui.theme.GestaoUsuarioFirebaseAuthTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,9 +22,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             GestaoUsuarioFirebaseAuthTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    CadastrarUsuarioScreen()
-                }
+                val navController = rememberNavController()
+                AppNavigation(navController = navController)
             }
         }
     }
