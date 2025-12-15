@@ -23,6 +23,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,14 +39,20 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.type.DateTime
 import com.santos.valdomiro.gestaousuariofirebaseauth.R
+import com.santos.valdomiro.gestaousuariofirebaseauth.domain.model.Usuario
 import com.santos.valdomiro.gestaousuariofirebaseauth.ui.theme.Dimens
 import com.santos.valdomiro.gestaousuariofirebaseauth.ui.theme.GestaoUsuarioFirebaseAuthTheme
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Composable
 fun CadastrarUsuarioScreen(
     irParaLogin: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: CadastrarUsuarioViewModel = hiltViewModel()
 ) {
     var nome by remember { mutableStateOf("") }
     var sobrenome by remember { mutableStateOf("") }
@@ -61,6 +69,19 @@ fun CadastrarUsuarioScreen(
     val scrollState = rememberScrollState()
 
     val context = LocalContext.current
+
+    val state by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(state) {
+        if (state.sucesso) {
+            Toast.makeText(context, "Usuário cadastrado", Toast.LENGTH_SHORT).show()
+            irParaLogin()
+        }
+        if (state.erro != null) {
+            Toast.makeText(context, state.erro, Toast.LENGTH_SHORT).show()
+            viewModel.onEvent(MeuEvento.LimparErro)
+        }
+    }
 
     Column(
         modifier = modifier
@@ -158,8 +179,33 @@ fun CadastrarUsuarioScreen(
 
         Button(
             onClick = {
-                Toast.makeText(context, "Cadastrar", Toast.LENGTH_SHORT).show()
+                if (nome.isBlank() || email.isBlank() || senha.isBlank()) {
+                    Toast.makeText(context, "Preencha todos os campos obrigatórios", Toast.LENGTH_SHORT).show()
+                    return@Button
+                }
+
+                if (senha != confirmarSenha) {
+                    Toast.makeText(context, "As senhas não conferem", Toast.LENGTH_SHORT).show()
+                    return@Button
+                }
+
+                val novoUsuario = Usuario(
+                    nome = nome,
+                    sobrenome = sobrenome,
+                    email = email,
+                    idade = 19,
+                    adicionadoEm = LocalDate.now()
+                )
+
+                viewModel.onEvent(
+                    MeuEvento.Cadastrar(
+                        email = email,
+                        pass = senha,
+                        usuario = novoUsuario
+                    )
+                )
             },
+            enabled = !state.loading,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
             Text("Cadastrar")
