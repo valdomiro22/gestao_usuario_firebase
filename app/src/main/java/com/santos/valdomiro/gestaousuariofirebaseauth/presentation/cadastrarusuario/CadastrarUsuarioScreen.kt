@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -102,6 +103,7 @@ fun CadastrarUsuarioScreen(
         Text(text = stringResource(R.string.label_nome), fontSize = 12.sp)
         OutlinedTextField(
             value = nome,
+            maxLines = 1,
             onValueChange = { novoTexto -> nome = novoTexto },
             placeholder = { Text(stringResource(R.string.placeholder_nome)) },
             modifier = Modifier.fillMaxWidth(),
@@ -114,6 +116,7 @@ fun CadastrarUsuarioScreen(
         Text(text = stringResource(R.string.label_sobrenome), fontSize = 12.sp)
         OutlinedTextField(
             value = sobrenome,
+            maxLines = 1,
             onValueChange = { novoTexto -> sobrenome = novoTexto },
             placeholder = { Text(stringResource(R.string.placeholder_sobrenome)) },
             modifier = Modifier.fillMaxWidth(),
@@ -126,6 +129,7 @@ fun CadastrarUsuarioScreen(
         Text(text = stringResource(R.string.label_email), fontSize = 12.sp)
         OutlinedTextField(
             value = email,
+            maxLines = 1,
             onValueChange = { novoTexto -> email = novoTexto },
             placeholder = { Text(stringResource(R.string.placeholder_email)) },
             modifier = Modifier.fillMaxWidth(),
@@ -138,6 +142,7 @@ fun CadastrarUsuarioScreen(
         Text(text = stringResource(R.string.laber_senha), fontSize = 12.sp)
         OutlinedTextField(
             value = senha,
+            maxLines = 1,
             onValueChange = { novoTexto -> senha = novoTexto },
             placeholder = { Text(stringResource(R.string.placeholder_senha)) },
             modifier = Modifier.fillMaxWidth(),
@@ -159,6 +164,7 @@ fun CadastrarUsuarioScreen(
         Text(text = stringResource(R.string.laber_confirmar_senha), fontSize = 12.sp)
         OutlinedTextField(
             value = confirmarSenha,
+            maxLines = 1,
             onValueChange = { novoTexto -> confirmarSenha = novoTexto },
             placeholder = { Text(stringResource(R.string.placeholder_senha)) },
             modifier = Modifier.fillMaxWidth(),
@@ -208,7 +214,18 @@ fun CadastrarUsuarioScreen(
             enabled = !state.loading,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
-            Text("Cadastrar")
+            if (state.loading) {
+                Text("Cadastrando...")
+            } else {
+                Text("Cadastrar")
+            }
+        }
+
+        if (!state.loading) {
+            Spacer(modifier = Modifier.height(Dimens.EspacamentoG))
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
         }
 
         Spacer(modifier = Modifier.height(Dimens.EspacamentoMM))

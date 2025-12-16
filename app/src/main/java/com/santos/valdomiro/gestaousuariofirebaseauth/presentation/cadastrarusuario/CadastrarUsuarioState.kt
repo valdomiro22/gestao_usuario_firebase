@@ -2,10 +2,9 @@ package com.santos.valdomiro.gestaousuariofirebaseauth.presentation.cadastrarusu
 
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.model.Usuario
 
-// O Estado da UI
 data class CadastrarUsuarioState(
     val loading: Boolean = false,
-    val sucesso: Boolean = false, // Mudei de 'dados' para 'sucesso' (flag de navegação)
+    val sucesso: Boolean = false,
     val erro: String? = null
 )
 
