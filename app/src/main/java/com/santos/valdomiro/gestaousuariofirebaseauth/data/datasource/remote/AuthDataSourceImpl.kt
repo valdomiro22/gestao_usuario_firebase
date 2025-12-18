@@ -17,8 +17,11 @@ class AuthDataSourceImpl @Inject constructor(
         return user.uid;
     }
 
-    override suspend fun login(email: String, password: String): String {
-        TODO("Not yet implemented")
+    override suspend fun login(email: String, password: String): Result<String> {
+        return runCatching {
+            val result = auth.signInWithEmailAndPassword(email, password).await()
+            result.user?.uid ?: throw Exception("Usuário nulo")
+        }
     }
 
     override suspend fun sendPasswordResetEmail(email: String) {

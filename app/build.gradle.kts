@@ -67,6 +67,9 @@ dependencies {
     // Para navegação
     implementation("androidx.navigation:navigation-compose:2.9.6")
 
+    // Para usar na viewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.10.0")
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

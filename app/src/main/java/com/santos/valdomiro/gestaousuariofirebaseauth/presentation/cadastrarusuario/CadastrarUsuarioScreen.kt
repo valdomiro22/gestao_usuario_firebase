@@ -44,6 +44,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.type.DateTime
 import com.santos.valdomiro.gestaousuariofirebaseauth.R
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.model.Usuario
+import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.widgets.CustomOutlinedTextField
 import com.santos.valdomiro.gestaousuariofirebaseauth.ui.theme.Dimens
 import com.santos.valdomiro.gestaousuariofirebaseauth.ui.theme.GestaoUsuarioFirebaseAuthTheme
 import java.time.LocalDate
@@ -221,7 +222,7 @@ fun CadastrarUsuarioScreen(
             }
         }
 
-        if (!state.loading) {
+        if (state.loading) {
             Spacer(modifier = Modifier.height(Dimens.EspacamentoG))
             CircularProgressIndicator(
                 modifier = Modifier.align(Alignment.CenterHorizontally)

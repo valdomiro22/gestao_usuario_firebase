@@ -32,8 +32,12 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun login(email: String, password: String): String {
-        TODO("Not yet implemented")
+    override suspend fun login(email: String, password: String): Result<String> {
+        try {
+            return authDataSource.login(email, password)
+        } catch (e: Exception) {
+            throw Exception(e)
+        }
     }
 
     override suspend fun sendPasswordResetEmail(email: String) {

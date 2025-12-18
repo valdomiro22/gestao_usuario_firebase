@@ -5,13 +5,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.cadastrarusuario.CadastrarUsuarioScreen
+import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.home.HomeScreen
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.login.LoginScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
 
     NavHost(
-        navController = navController, startDestination = AppRoutes.CADASTRO
+        navController = navController, startDestination = AppRoutes.LOGIN
     ) {
         composable(AppRoutes.LOGIN) {
             LoginScreen(
@@ -19,7 +20,14 @@ fun AppNavigation(navController: NavHostController) {
                     navController.navigate(AppRoutes.CADASTRO) {
                         popUpTo(AppRoutes.LOGIN) { inclusive = true }
                     }
-                })
+                },
+
+                irParaHome = {
+                    navController.navigate(AppRoutes.HOME) {
+                        popUpTo(AppRoutes.LOGIN) { inclusive = true }
+                    }
+                }
+            )
         }
 
         // 2. Rota de CADASTRO: Aqui dentro vai a tela de Cadastro
@@ -31,6 +39,10 @@ fun AppNavigation(navController: NavHostController) {
                     }
                 }
             )
+        }
+
+        composable(AppRoutes.HOME) {
+            HomeScreen()
         }
     }
 }

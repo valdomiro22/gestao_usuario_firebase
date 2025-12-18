@@ -1,5 +1,6 @@
 package com.santos.valdomiro.gestaousuariofirebaseauth.di
 
+import com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.repository.AuthRepositoryImpl
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.repository.AuthRepository
 import dagger.Binds
 import dagger.Module
@@ -14,7 +15,7 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindAuthRepository(
-        authRepository: AuthRepository
+        authRepository: AuthRepositoryImpl
     ): AuthRepository
 
 }
