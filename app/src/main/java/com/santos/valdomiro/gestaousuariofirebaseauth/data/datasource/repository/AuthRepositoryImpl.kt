@@ -52,7 +52,11 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override fun getCurrentUserId(): String? {
-        TODO("Not yet implemented")
+        return try {
+            authDataSource.getCurrentUserId()
+        } catch (e: Exception) {
+            throw Exception("Erro ao recuperar usuario logado")
+        }
     }
 
     override suspend fun sendPasswordResetEmail(email: String): Result<Unit> {

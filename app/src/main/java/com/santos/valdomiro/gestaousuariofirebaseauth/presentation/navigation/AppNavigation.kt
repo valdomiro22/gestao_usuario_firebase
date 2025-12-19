@@ -1,25 +1,26 @@
 package com.santos.valdomiro.gestaousuariofirebaseauth.presentation.navigation
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.cadastrarusuario.CadastrarUsuarioScreen
+import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.configuracoes.ConfiguracoesScreen
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.home.HomeScreen
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.login.LoginScreen
+import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.splashscreen.SplashScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
 
     NavHost(
-        navController = navController, startDestination = AppRoutes.LOGIN
+        navController = navController, startDestination = AppRoutes.SPLASH
     ) {
         composable(AppRoutes.LOGIN) {
             LoginScreen(
                 irParaCadastro = {
-                    navController.navigate(AppRoutes.CADASTRO) {
-                        popUpTo(AppRoutes.LOGIN) { inclusive = true }
-                    }
+                    navController.navigate(AppRoutes.CADASTRO)
                 },
 
                 irParaHome = {
@@ -30,13 +31,10 @@ fun AppNavigation(navController: NavHostController) {
             )
         }
 
-        // 2. Rota de CADASTRO: Aqui dentro vai a tela de Cadastro
         composable(AppRoutes.CADASTRO) {
             CadastrarUsuarioScreen(
                 irParaLogin = {
-                    navController.navigate(AppRoutes.LOGIN) {
-                        popUpTo(AppRoutes.CADASTRO) { inclusive = true }
-                    }
+                    navController.popBackStack()
                 }
             )
         }
@@ -46,6 +44,28 @@ fun AppNavigation(navController: NavHostController) {
                 irParaLogin = {
                     navController.navigate(AppRoutes.LOGIN) {
                         popUpTo(AppRoutes.HOME) { inclusive = true }
+                    }
+                },
+
+                irParaConfiguracoes = {
+                    navController.navigate(AppRoutes.CONFIGURACOES)
+                }
+            )
+        }
+
+        composable(AppRoutes.CONFIGURACOES) {
+            ConfiguracoesScreen(
+                irParaHome = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable(AppRoutes.SPLASH) {
+            SplashScreen(
+                irParaDestino = { retaRecebida ->
+                    navController.navigate(retaRecebida) {
+                        popUpTo(AppRoutes.SPLASH) { inclusive = true }
                     }
                 }
             )

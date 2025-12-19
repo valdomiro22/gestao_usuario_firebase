@@ -25,6 +25,7 @@ import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.common.UiStat
 @Composable
 fun HomeScreen(
     irParaLogin: () -> Unit,
+    irParaConfiguracoes: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -66,6 +67,19 @@ fun HomeScreen(
                 fontSize = 18.sp
             )
         }
+
+        Spacer(Modifier.height(100.dp))
+
+        Button(
+            onClick = { irParaConfiguracoes() },
+            contentPadding = PaddingValues(horizontal = 40.dp, vertical = 15.dp),
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        ) {
+            Text(
+                "Configurações",
+                fontSize = 18.sp
+            )
+        }
     }
 }
 
@@ -73,6 +87,6 @@ fun HomeScreen(
 @Composable
 fun HomeScreenPreview() {
     MaterialTheme {
-        HomeScreen({})
+        HomeScreen({}, {})
     }
 }

@@ -30,9 +30,9 @@ import com.santos.valdomiro.gestaousuariofirebaseauth.domain.model.Usuario
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.cadastrarusuario.MeuEvento
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.common.UiState
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.widgets.CustomOutlinedTextField
+import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.widgets.CustomOutlinedTextFieldSenha
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.widgets.CustomTextErro
 import com.santos.valdomiro.gestaousuariofirebaseauth.ui.theme.Dimens
-import dagger.hilt.android.lifecycle.HiltViewModel
 import org.intellij.lang.annotations.JdkConstants
 import java.time.LocalDate
 
@@ -94,7 +94,7 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(Dimens.EspacamentoG))
 
-        CustomOutlinedTextField(
+        CustomOutlinedTextFieldSenha(
             value = senha,
             onValueChange = {senha = it},
             placeHolder = stringResource(R.string.placeholder_senha),
@@ -115,9 +115,7 @@ fun LoginScreen(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             // Exibir mensangens de erro
-            if (state is UiState.Error) {
-                CustomTextErro((state as UiState.Error).message)
-            }
+            CustomTextErro((state as? UiState.Error)?.message ?: "")
 
             Text(
                 text = "Esqueceu a senha?",

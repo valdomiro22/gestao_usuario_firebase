@@ -29,7 +29,12 @@ class AuthDataSourceImpl @Inject constructor(
     }
 
     override fun getCurrentUserId(): String? {
-        TODO("Not yet implemented")
+        try {
+            val result = auth.currentUser
+            return result?.uid
+        } catch (e: Exception) {
+            throw Exception("Erro ao verificar usuario logado")
+        }
     }
 
     override fun signOut() {

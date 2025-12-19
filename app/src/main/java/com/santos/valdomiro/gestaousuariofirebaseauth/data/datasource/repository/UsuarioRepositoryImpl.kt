@@ -3,6 +3,7 @@ package com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.repositor
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.UsuarioRemoteDataSource
 import com.santos.valdomiro.gestaousuariofirebaseauth.data.mapper.toDocument
+import com.santos.valdomiro.gestaousuariofirebaseauth.data.mapper.toModel
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.exceptions.AcessoNegadoException
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.exceptions.ErroBancoDadosDesconhecidoException
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.exceptions.NaoEncontradoException
@@ -15,11 +16,12 @@ class UsuarioRepositoryImpl @Inject constructor(
     private val usuarioDataSource: UsuarioRemoteDataSource
 ) : UsuarioRepository {
 
-    override suspend fun insertUser(usuario: Usuario) {
-        try {
+    override suspend fun insertUser(usuario: Usuario): Result<Unit> {
+        return try {
             usuarioDataSource.insertUser(usuario.toDocument())
+            Result.success(Unit)
         } catch (e: FirebaseFirestoreException) {
-            throw when (e.code) {
+            val exceptionMapeada =  when (e.code) {
                 FirebaseFirestoreException.Code.PERMISSION_DENIED ->
                     AcessoNegadoException(e)
 
@@ -32,28 +34,31 @@ class UsuarioRepositoryImpl @Inject constructor(
                 else ->
                     ErroBancoDadosDesconhecidoException(e)
             }
+            Result.failure(exceptionMapeada)
         } catch (e: Exception) {
-            // Para qualquer outro erro genérico (ex: erro de conversão)
-            throw ErroBancoDadosDesconhecidoException(e)
+            Result.failure(ErroBancoDadosDesconhecidoException(e))
         }
     }
 
-    override suspend fun updateUser(
-        id: String,
-        usuario: Usuario
-    ) {
+    override suspend fun updateUser(id: String, usuario: Usuario): Result<Unit> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getUser(id: String): Usuario {
+    override suspend fun getUser(id: String): Result<Usuario?> {
+        return try {
+            val usuarioDocument = usuarioDataSource.getUser(id)
+            val usuario = usuarioDocument?.toModel()
+            Result.success(usuario)
+        } catch (e: Exception) {
+            Result.failure(Exception("Erro ao recuperar usuario no Firestore: ${e.message}"))
+        }
+    }
+
+    override suspend fun deleteUser(id: String): Result<Unit> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun deleteUser(id: String) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getAllUsers(): List<Usuario> {
+    override suspend fun getAllUsers(): Result<List<Usuario>> {
         TODO("Not yet implemented")
     }
 }

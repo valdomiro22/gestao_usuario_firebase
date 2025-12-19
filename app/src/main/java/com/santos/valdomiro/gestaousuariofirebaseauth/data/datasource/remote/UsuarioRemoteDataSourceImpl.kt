@@ -3,6 +3,7 @@ package com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.remote
 import com.google.firebase.firestore.FirebaseFirestore
 import com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.UsuarioRemoteDataSource
 import com.santos.valdomiro.gestaousuariofirebaseauth.data.dto.UsuarioDocument
+import com.santos.valdomiro.gestaousuariofirebaseauth.data.mapper.toModel
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -28,8 +29,14 @@ class UsuarioRemoteDataSourceImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getUser(id: String): UsuarioDocument {
-        TODO("Not yet implemented")
+    override suspend fun getUser(id: String): UsuarioDocument? {
+        val snapshot = firestore
+            .collection(usuarioCollection)
+            .document(id)
+            .get()
+            .await()
+
+        return snapshot.toObject(UsuarioDocument::class.java)
     }
 
     override suspend fun deleteUser(id: String) {
