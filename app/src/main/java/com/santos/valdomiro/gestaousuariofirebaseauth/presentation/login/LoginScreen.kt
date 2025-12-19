@@ -1,8 +1,10 @@
 package com.santos.valdomiro.gestaousuariofirebaseauth.presentation.login
 
+import android.text.Layout
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -12,6 +14,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -27,8 +30,10 @@ import com.santos.valdomiro.gestaousuariofirebaseauth.domain.model.Usuario
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.cadastrarusuario.MeuEvento
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.common.UiState
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.widgets.CustomOutlinedTextField
+import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.widgets.CustomTextErro
 import com.santos.valdomiro.gestaousuariofirebaseauth.ui.theme.Dimens
 import dagger.hilt.android.lifecycle.HiltViewModel
+import org.intellij.lang.annotations.JdkConstants
 import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,10 +66,7 @@ fun LoginScreen(
                 Toast.makeText(context, "Logado com sucesso!", Toast.LENGTH_SHORT).show()
                 irParaHome()
             }
-            is UiState.Error -> {
-                Toast.makeText(context, "Erro ao logar", Toast.LENGTH_LONG).show()
-                viewModel.resetState() // Aqui faz sentido resetar para habilitar o botão de novo
-            }
+            is UiState.Error -> {}
             else -> {}
         }
     }
@@ -108,14 +110,23 @@ fun LoginScreen(
             }
         )
 
-        Text(
-            text = "Esqueceu a senha?",
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier
-                .align(Alignment.End)
-                .padding(top = 8.dp)
-                .clickable { }
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            // Exibir mensangens de erro
+            if (state is UiState.Error) {
+                CustomTextErro((state as UiState.Error).message)
+            }
+
+            Text(
+                text = "Esqueceu a senha?",
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .padding(top = 8.dp)
+                    .clickable { }
+            )
+        }
 
         Spacer(modifier = Modifier.height(32.dp))
 
@@ -128,7 +139,7 @@ fun LoginScreen(
             Text("Logar")
         }
 
-//        if (state.loading) {
+//        if (state == UiState.Loading) {
 //            Spacer(modifier = Modifier.height(Dimens.EspacamentoG))
 //            CircularProgressIndicator(
 //                modifier = Modifier.align(Alignment.CenterHorizontally)

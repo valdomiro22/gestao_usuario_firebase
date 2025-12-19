@@ -25,7 +25,7 @@ class HomeViewModel @Inject constructor(
             val result = deslogarUseCase()
 
             result.onSuccess { _uiState.value = UiState.Success(Unit) }
-                .onFailure { _uiState.value = UiState.Error(it) }
+                .onFailure { _uiState.value = UiState.Error(it.message ?: "Erro desconhecido") }
         }
     }
 

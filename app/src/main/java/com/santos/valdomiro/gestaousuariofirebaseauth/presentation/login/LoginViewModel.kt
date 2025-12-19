@@ -21,11 +21,34 @@ class LoginViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     fun logar(email: String, senha: String) {
+        if (email.isBlank()) {
+            _uiState.value = UiState.Error("Digite seu e-mail")
+            return
+        }
+
+        if (senha.isBlank()) {
+            _uiState.value = UiState.Error("Digite a senha")
+            return
+        }
+
         viewModelScope.launch {
             _uiState.value = UiState.Loading
             val result = logarUsuarioUseCase(email, senha)
-            result.onSuccess { _uiState.value = UiState.Success(it) }
-                .onFailure { _uiState.value = UiState.Error(it) }
+            result
+                .onSuccess {
+                    _uiState.value = UiState.Success(it)
+                }
+                .onFailure { exception ->
+                    val erroMapeado = when {
+                        exception.message?.contains("credential") == true -> "Email ou senha incorretos"
+                        exception.message?.contains("network") == true -> "Sem conexão com a internet"
+                        exception.message?.contains("too many requests") == true -> "Quantidade de tentativas excedido. Tente mais tarde"
+                        else -> "Erro ao entrar. Verifique os campos"
+                    }
+
+                    _uiState.value = UiState.Error(erroMapeado)
+
+                }
         }
     }
 
