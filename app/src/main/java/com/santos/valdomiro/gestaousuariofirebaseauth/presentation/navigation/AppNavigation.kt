@@ -35,14 +35,20 @@ fun AppNavigation(navController: NavHostController) {
             CadastrarUsuarioScreen(
                 irParaLogin = {
                     navController.navigate(AppRoutes.LOGIN) {
-                        popUpTo(AppRoutes.LOGIN) { inclusive = true }
+                        popUpTo(AppRoutes.CADASTRO) { inclusive = true }
                     }
                 }
             )
         }
 
         composable(AppRoutes.HOME) {
-            HomeScreen()
+            HomeScreen(
+                irParaLogin = {
+                    navController.navigate(AppRoutes.LOGIN) {
+                        popUpTo(AppRoutes.HOME) { inclusive = true }
+                    }
+                }
+            )
         }
     }
 }

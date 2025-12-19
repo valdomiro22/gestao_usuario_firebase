@@ -21,20 +21,11 @@ class LoginViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     fun logar(email: String, senha: String) {
-        Log.d(Util.TAG, "Sucesso no Firebase! UID")
         viewModelScope.launch {
-            Log.d(Util.TAG, "Estado carregando")
             _uiState.value = UiState.Loading
             val result = logarUsuarioUseCase(email, senha)
-            Log.d(Util.TAG, "Metodo executado")
-            result.onSuccess {
-                Log.d(Util.TAG, "Sucesso")
-                _uiState.value = UiState.Success(it)
-            }
-                .onFailure {
-                    Log.d(Util.TAG, "Erro")
-                    _uiState.value = UiState.Error(it)
-                }
+            result.onSuccess { _uiState.value = UiState.Success(it) }
+                .onFailure { _uiState.value = UiState.Error(it) }
         }
     }
 

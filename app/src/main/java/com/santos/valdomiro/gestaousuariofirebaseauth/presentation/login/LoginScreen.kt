@@ -54,21 +54,18 @@ fun LoginScreen(
             senha.isNotBlank() &&
             senha.length >= 6
 
-    LaunchedEffect(key1 = state) {
-        when (val currentState = state) {
+    LaunchedEffect(state) {
+        when (state) {
             is UiState.Success -> {
-                Toast.makeText(context, "Logado", Toast.LENGTH_SHORT).show()
-                viewModel.resetState()
+                // NÃO chame resetState aqui agora
+                Toast.makeText(context, "Logado com sucesso!", Toast.LENGTH_SHORT).show()
+                irParaHome()
             }
             is UiState.Error -> {
-                Toast.makeText(context, "Erro ao fazer login", Toast.LENGTH_SHORT).show()
-                viewModel.resetState()
+                Toast.makeText(context, "Erro ao logar", Toast.LENGTH_LONG).show()
+                viewModel.resetState() // Aqui faz sentido resetar para habilitar o botão de novo
             }
-            else -> {
-                Toast.makeText(context, "Outra condição", Toast.LENGTH_SHORT).show()
-                viewModel.resetState()
-
-            }
+            else -> {}
         }
     }
 
@@ -125,8 +122,6 @@ fun LoginScreen(
         Button(
             onClick = {
                 viewModel.logar(email, senha)
-                irParaHome()
-                Toast.makeText(context, "Usuario logado", Toast.LENGTH_SHORT).show()
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {

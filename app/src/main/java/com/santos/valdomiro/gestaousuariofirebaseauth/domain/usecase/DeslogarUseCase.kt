@@ -3,15 +3,15 @@ package com.santos.valdomiro.gestaousuariofirebaseauth.domain.usecase
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.repository.AuthRepository
 import javax.inject.Inject
 
-class LogarUsuarioUseCase @Inject constructor(
-    private val authRepository: AuthRepository
+class DeslogarUseCase @Inject constructor(
+    private val auth: AuthRepository
 ) {
 
-    suspend operator fun invoke(email: String, senha: String): Result<String> {
+    suspend operator fun invoke(): Result<Unit> {
         try {
-            return authRepository.login(email, senha)
+            return auth.signOut()
         } catch (e: Exception) {
-            throw e
+            throw Exception("Erro ao deslogar usuario: $e")
         }
     }
 }

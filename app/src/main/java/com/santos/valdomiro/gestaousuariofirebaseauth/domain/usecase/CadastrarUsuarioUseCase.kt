@@ -10,14 +10,12 @@ class CadastrarUsuarioUseCase @Inject constructor(
     private val usuarioRepository: UsuarioRepositoryImpl
 ) {
 
-    suspend operator fun invoke(usuario: Usuario, password: String, email: String) {
-        val novoId = authRepository.createUser(email, password)
-        val usuarioConId = usuario.copy(id = novoId)
-
-        try {
+    suspend operator fun invoke(usuario: Usuario, password: String, email: String) : Result<String> {
+        return runCatching {
+            val novoId = authRepository.createUser(email, password).getOrThrow()
+            val usuarioConId = usuario.copy(id = novoId)
             usuarioRepository.insertUser(usuarioConId)
-        } catch (e: Exception) {
-            throw e
+            novoId
         }
     }
 }

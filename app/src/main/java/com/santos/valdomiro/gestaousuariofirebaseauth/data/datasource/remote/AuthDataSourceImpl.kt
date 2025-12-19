@@ -33,7 +33,11 @@ class AuthDataSourceImpl @Inject constructor(
     }
 
     override fun signOut() {
-        TODO("Not yet implemented")
+        try {
+            auth.signOut()
+        } catch (e: Exception) {
+            throw Exception("Erro ao deslogar usuario: $e")
+        }
     }
 
     override suspend fun updateEmailAddress(newEmail: String, password: String) {

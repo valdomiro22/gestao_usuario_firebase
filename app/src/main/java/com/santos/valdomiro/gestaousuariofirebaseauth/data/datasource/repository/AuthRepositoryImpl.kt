@@ -14,20 +14,25 @@ class AuthRepositoryImpl @Inject constructor(
     private val authDataSource: AuthDataSource
 ) : AuthRepository {
 
-    override suspend fun createUser(email: String, password: String): String {
+    override suspend fun createUser(email: String, password: String): Result<String> {
         return try {
-            authDataSource.createUser(email, password)
+            val uid = authDataSource.createUser(email, password)
+            Result.success(uid)
         } catch (e: FirebaseAuthUserCollisionException) {
-            throw AuthException.EmailEmUso
+            Result.failure(AuthException.EmailEmUso)
         } catch (e: FirebaseAuthWeakPasswordException) {
-            throw AuthException.SenhaFraca
+            Result.failure(AuthException.SenhaFraca)
         } catch (e: FirebaseAuthInvalidCredentialsException) {
-            throw AuthException.EmailInvalido
+            Result.failure(AuthException.EmailInvalido)
         } catch (e: FirebaseNetworkException) {
-            throw AuthException.ErroDeRede
+            Result.failure(AuthException.ErroDeRede)
         } catch (e: Exception) {
-            throw AuthException.Desconhecido(
-                Exception("Erro descohecido ao criar usuario: $e")
+            Result.failure(
+                AuthException.Desconhecido(
+                    AuthException.Desconhecido(
+                        Exception("Erro descohecido ao criar usuario: ${e.message}")
+                    )
+                )
             )
         }
     }
@@ -40,30 +45,29 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun sendPasswordResetEmail(email: String) {
-        TODO("Not yet implemented")
+    override fun signOut(): Result<Unit> {
+        return runCatching {
+            authDataSource.signOut()
+        }
     }
 
     override fun getCurrentUserId(): String? {
         TODO("Not yet implemented")
     }
 
-    override fun signOut() {
+    override suspend fun sendPasswordResetEmail(email: String): Result<Unit> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun updateEmailAddress(newEmail: String, password: String) {
+    override suspend fun updateEmailAddress(newEmail: String, password: String): Result<Unit> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun updatePassword(
-        newPassword: String,
-        currentPassword: String
-    ) {
+    override suspend fun updatePassword(newPassword: String, currentPassword: String): Result<Unit> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun deleteUser() {
+    override suspend fun deleteUser(): Result<Unit> {
         TODO("Not yet implemented")
     }
 }
