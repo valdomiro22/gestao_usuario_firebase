@@ -9,13 +9,13 @@ import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.cadastrarusua
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.configuracoes.ConfiguracoesScreen
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.home.HomeScreen
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.login.LoginScreen
-import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.splashscreen.SplashScreen
 
 @Composable
-fun AppNavigation(navController: NavHostController) {
+fun AppNavigation(navController: NavHostController, destino: String) {
 
     NavHost(
-        navController = navController, startDestination = AppRoutes.SPLASH
+        navController = navController,
+        startDestination = destino
     ) {
         composable(AppRoutes.LOGIN) {
             LoginScreen(
@@ -57,16 +57,6 @@ fun AppNavigation(navController: NavHostController) {
             ConfiguracoesScreen(
                 irParaHome = {
                     navController.popBackStack()
-                }
-            )
-        }
-
-        composable(AppRoutes.SPLASH) {
-            SplashScreen(
-                irParaDestino = { retaRecebida ->
-                    navController.navigate(retaRecebida) {
-                        popUpTo(AppRoutes.SPLASH) { inclusive = true }
-                    }
                 }
             )
         }
