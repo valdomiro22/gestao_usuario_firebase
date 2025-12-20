@@ -1,7 +1,6 @@
 package com.santos.valdomiro.gestaousuariofirebaseauth.presentation.configuracoes
 
 import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,13 +9,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,24 +21,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.santos.valdomiro.gestaousuariofirebaseauth.R
-import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.widgets.CampoImagemAlteravel
-import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.widgets.CustomOutlinedTextField
+import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.components.CampoImagemAlteravel
+import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.components.CustomOutlinedTextField
 import com.santos.valdomiro.gestaousuariofirebaseauth.ui.theme.Dimens
 
 @Composable
-fun ConfiguracoesScreen(
+fun ConfiguracoesUsuarioScreen(
     irParaHome: () -> Unit,
+    viewModel: ConfiguracoesUsuarioViewModel = hiltViewModel()
 ) {
 
     var nome by remember { mutableStateOf("") }
@@ -67,7 +60,7 @@ fun ConfiguracoesScreen(
         CampoImagemAlteravel(
             photoUrl = "https://images.unsplash.com/photo-1761839258513-099c3121d72d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             onClick = {
-                Toast.makeText(context, "Alterar foto", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context, "Alterar foto", Toast.LENGTH_SHORT).show()
             }
         )
 
@@ -153,10 +146,10 @@ fun ConfiguracoesScreen(
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun ConfiguracoesScreenPreview() {
-    MaterialTheme {
-        ConfiguracoesScreen {}
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun ConfiguracoesUsuarioScreenPreview() {
+//    MaterialTheme {
+//        ConfiguracoesUsuarioScreen {}
+//    }
+//}

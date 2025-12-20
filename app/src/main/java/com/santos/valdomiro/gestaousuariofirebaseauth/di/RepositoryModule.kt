@@ -1,8 +1,10 @@
 package com.santos.valdomiro.gestaousuariofirebaseauth.di
 
 import com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.repository.AuthRepositoryImpl
+import com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.repository.StorageRepositoryImpl
 import com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.repository.UsuarioFirestoreFirestoreRepositoryImpl
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.repository.AuthRepository
+import com.santos.valdomiro.gestaousuariofirebaseauth.domain.repository.StorageRepository
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.repository.UsuarioFirestoreRepository
 import dagger.Binds
 import dagger.Module
@@ -25,4 +27,10 @@ abstract class RepositoryModule {
     abstract fun bindUsuarioRepository(
         usuarioFirestoreRepositoryImpl: UsuarioFirestoreFirestoreRepositoryImpl
     ): UsuarioFirestoreRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindStorageRepository(
+        storageRepositoryImpl: StorageRepositoryImpl
+    ): StorageRepository
 }

@@ -1,9 +1,8 @@
-package com.santos.valdomiro.gestaousuariofirebaseauth.presentation.widgets
+package com.santos.valdomiro.gestaousuariofirebaseauth.presentation.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,12 +12,13 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CustomOutlinedTextField(
+fun CustomOutlinedTextFieldSenha(
     value: String,
     onValueChange: (String) -> Unit,
     placeHolder: String,
     keyboardType: KeyboardType,
-    icone: @Composable (() -> Unit)? = null
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    trailingIcon: @Composable (() -> Unit)? = null,
 ) {
     OutlinedTextField(
         value = value,
@@ -28,10 +28,10 @@ fun CustomOutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         shape = RoundedCornerShape(12.dp),
-        leadingIcon = icone
+        visualTransformation = visualTransformation,
+        trailingIcon = trailingIcon
     )
 }
-
 
 // Como usar
 //CustomOutlinedTextField(

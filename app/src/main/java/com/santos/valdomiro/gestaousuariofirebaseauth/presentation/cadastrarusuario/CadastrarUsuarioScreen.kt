@@ -41,14 +41,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.type.DateTime
 import com.santos.valdomiro.gestaousuariofirebaseauth.R
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.model.Usuario
-import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.widgets.CustomOutlinedTextField
 import com.santos.valdomiro.gestaousuariofirebaseauth.ui.theme.Dimens
 import com.santos.valdomiro.gestaousuariofirebaseauth.ui.theme.GestaoUsuarioFirebaseAuthTheme
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 @Composable
 fun CadastrarUsuarioScreen(

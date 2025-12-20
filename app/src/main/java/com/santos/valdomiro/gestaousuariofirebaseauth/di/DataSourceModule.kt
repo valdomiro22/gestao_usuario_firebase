@@ -1,8 +1,10 @@
 package com.santos.valdomiro.gestaousuariofirebaseauth.di
 
 import com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.AuthDataSource
+import com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.StorageDataSource
 import com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.UsuarioRemoteDataSource
 import com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.remote.AuthDataSourceImpl
+import com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.remote.StorageDataSourceImpl
 import com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.remote.UsuarioRemoteDataSourceImpl
 import dagger.Binds
 import dagger.Module
@@ -25,4 +27,10 @@ abstract class DataSourceModule {
     abstract fun bindUsuarioRemoteDataSource(
         impl: UsuarioRemoteDataSourceImpl
     ): UsuarioRemoteDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindStorageDataSource(
+        impl: StorageDataSourceImpl
+    ): StorageDataSource
 }

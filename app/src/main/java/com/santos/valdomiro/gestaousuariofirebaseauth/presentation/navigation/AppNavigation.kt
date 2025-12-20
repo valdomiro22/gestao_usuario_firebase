@@ -1,12 +1,11 @@
 package com.santos.valdomiro.gestaousuariofirebaseauth.presentation.navigation
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.cadastrarusuario.CadastrarUsuarioScreen
-import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.configuracoes.ConfiguracoesScreen
+import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.configuracoes.ConfiguracoesUsuarioScreen
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.home.HomeScreen
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.login.LoginScreen
 
@@ -54,7 +53,7 @@ fun AppNavigation(navController: NavHostController, destino: String) {
         }
 
         composable(AppRoutes.CONFIGURACOES) {
-            ConfiguracoesScreen(
+            ConfiguracoesUsuarioScreen(
                 irParaHome = {
                     navController.popBackStack()
                 }

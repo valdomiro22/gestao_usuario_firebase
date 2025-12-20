@@ -1,4 +1,4 @@
-package com.santos.valdomiro.gestaousuariofirebaseauth.presentation.widgets
+package com.santos.valdomiro.gestaousuariofirebaseauth.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
