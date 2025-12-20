@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.santos.valdomiro.gestaousuariofirebaseauth.R
+import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.widgets.CampoImagemAlteravel
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.widgets.CustomOutlinedTextField
 import com.santos.valdomiro.gestaousuariofirebaseauth.ui.theme.Dimens
 
@@ -63,13 +64,11 @@ fun ConfiguracoesScreen(
 
         Spacer(modifier = Modifier.height(Dimens.EspacamentoG))
 
-        Image(
-//            painter = painterResource(id = android.R.drawable.ic_menu_camera),
-            painter = rememberVectorPainter(Icons.Default.Person),
-            contentDescription = "Ícone",
-            modifier = Modifier
-                .size(100.dp)
-                .clip(CircleShape)
+        CampoImagemAlteravel(
+            photoUrl = "https://images.unsplash.com/photo-1761839258513-099c3121d72d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            onClick = {
+                Toast.makeText(context, "Alterar foto", Toast.LENGTH_SHORT).show()
+            }
         )
 
         Spacer(modifier = Modifier.height(Dimens.EspacamentoG))
@@ -151,16 +150,6 @@ fun ConfiguracoesScreen(
             Text("Excluir Conta")
         }
     }
-}
-
-@Composable
-fun AsyncImage(
-    model: String,
-    contentDescription: String,
-    modifier: Modifier,
-    contentScale: ContentScale
-) {
-    TODO("Not yet implemented")
 }
 
 
