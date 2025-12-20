@@ -76,6 +76,8 @@ dependencies {
     // Para asyncImage
     implementation("io.coil-kt:coil-compose:2.7.0")
 
+    implementation("com.google.accompanist:accompanist-permissions:0.32.0")
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

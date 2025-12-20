@@ -11,14 +11,13 @@ class StorageDataSourceImpl @Inject constructor(
 ) : StorageDataSource {
 
     override suspend fun uploadFile(path: String, fileUri: Uri): Result<String> {
-         return try {
-             val reference = storage.reference.child(path)
-             reference.putFile(fileUri).await()
-
-             val downloadUrl = reference.downloadUrl.await().toString()
-             Result.success(downloadUrl)
+        return try {
+            val reference = storage.reference.child(path)
+            reference.putFile(fileUri).await()
+            val downloadUrl = reference.downloadUrl.await().toString()
+            Result.success(downloadUrl)
         } catch (e: Exception) {
-             Result.failure(e)
+            Result.failure(e)
         }
     }
 

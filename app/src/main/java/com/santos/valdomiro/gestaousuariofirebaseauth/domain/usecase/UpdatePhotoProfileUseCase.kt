@@ -17,7 +17,7 @@ class UpdatePhotoProfileUseCase @Inject constructor(
             val usuarioResult = usuarioFirestoreRepository.getUser(uid)
             val usuario = usuarioResult.getOrNull() ?: return Result.failure(Exception("Usuario não encontrado"))
 
-            if (!usuario.fotoUrl.isNotBlank()) {
+            if (usuario.fotoUrl.isNotBlank()) {
                 storageRepository.deleteFile(usuario.fotoUrl)
             }
 

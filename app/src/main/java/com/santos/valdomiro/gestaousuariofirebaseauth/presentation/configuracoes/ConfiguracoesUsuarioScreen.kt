@@ -1,6 +1,11 @@
 package com.santos.valdomiro.gestaousuariofirebaseauth.presentation.configuracoes
 
+import android.Manifest
+import android.net.Uri
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,22 +31,58 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import com.santos.valdomiro.gestaousuariofirebaseauth.R
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.components.CampoImagemAlteravel
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.components.CustomOutlinedTextField
 import com.santos.valdomiro.gestaousuariofirebaseauth.ui.theme.Dimens
+import com.santos.valdomiro.gestaousuariofirebaseauth.utils.Util
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun ConfiguracoesUsuarioScreen(
     irParaHome: () -> Unit,
     viewModel: ConfiguracoesUsuarioViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
 
     var nome by remember { mutableStateOf("") }
     var sobrenome by remember { mutableStateOf("") }
+    val cameraPermission = rememberPermissionState(Manifest.permission.CAMERA)
 
-    val context = LocalContext.current
+    var photoUri by remember { mutableStateOf<Uri?>(null) }
+
+    val takePictureLaucher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) { success ->
+        if (success && photoUri != null) {
+            Log.d(Util.TAG, "Foto tirada com sucesso! URI: $photoUri")
+            viewModel.atualizarFoto(photoUri!!)
+        } else {
+            Log.d(Util.TAG, "Foto cancelada ou falhou")
+        }
+    }
+
+    fun createImageUri(): Uri {
+        val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val imageFile = File(context.filesDir, "images/JPEG_${timestamp}.jpg")
+        imageFile.parentFile?.mkdirs()
+
+        return FileProvider.getUriForFile(
+            context,
+            "com.santos.valdomiro.gestaousuariofirebaseauth.provider",
+//            "${context.packageName}.provider",
+            imageFile
+        )
+    }
 
     Column(
         modifier = Modifier
@@ -60,7 +101,13 @@ fun ConfiguracoesUsuarioScreen(
         CampoImagemAlteravel(
             photoUrl = "https://images.unsplash.com/photo-1761839258513-099c3121d72d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             onClick = {
-//                Toast.makeText(context, "Alterar foto", Toast.LENGTH_SHORT).show()
+                if (cameraPermission.status.isGranted) {
+                    val uri = createImageUri()
+                    photoUri = uri
+                    takePictureLaucher.launch(uri)
+                } else {
+                    cameraPermission.launchPermissionRequest()
+                }
             }
         )
 
