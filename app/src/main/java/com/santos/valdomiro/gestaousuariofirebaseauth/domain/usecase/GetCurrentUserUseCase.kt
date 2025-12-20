@@ -1,15 +1,13 @@
 package com.santos.valdomiro.gestaousuariofirebaseauth.domain.usecase
 
-import com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.repository.AuthRepositoryImpl
-import com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.repository.UsuarioRepositoryImpl
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.model.Usuario
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.repository.AuthRepository
-import com.santos.valdomiro.gestaousuariofirebaseauth.domain.repository.UsuarioRepository
+import com.santos.valdomiro.gestaousuariofirebaseauth.domain.repository.UsuarioFirestoreRepository
 import javax.inject.Inject
 
 class GetCurrentUserUseCase @Inject constructor(
     private val authRepository: AuthRepository,
-    private val usuarioRepository: UsuarioRepository
+    private val usuarioFirestoreRepository: UsuarioFirestoreRepository
 ) {
 
     suspend operator fun invoke(): Result<Usuario?> {
@@ -17,7 +15,7 @@ class GetCurrentUserUseCase @Inject constructor(
             val uid = authRepository.getCurrentUserId()
 
             if (uid != null) {
-                usuarioRepository.getUser(uid)
+                usuarioFirestoreRepository.getUser(uid)
             } else {
                 Result.success(null)
             }

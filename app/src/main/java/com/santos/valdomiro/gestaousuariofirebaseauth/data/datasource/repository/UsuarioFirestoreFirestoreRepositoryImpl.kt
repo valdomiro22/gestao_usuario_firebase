@@ -9,12 +9,12 @@ import com.santos.valdomiro.gestaousuariofirebaseauth.domain.exceptions.ErroBanc
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.exceptions.NaoEncontradoException
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.exceptions.ServicoIndisponivelException
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.model.Usuario
-import com.santos.valdomiro.gestaousuariofirebaseauth.domain.repository.UsuarioRepository
+import com.santos.valdomiro.gestaousuariofirebaseauth.domain.repository.UsuarioFirestoreRepository
 import javax.inject.Inject
 
-class UsuarioRepositoryImpl @Inject constructor(
+class UsuarioFirestoreFirestoreRepositoryImpl @Inject constructor(
     private val usuarioDataSource: UsuarioRemoteDataSource
-) : UsuarioRepository {
+) : UsuarioFirestoreRepository {
 
     override suspend fun insertUser(usuario: Usuario): Result<Unit> {
         return try {

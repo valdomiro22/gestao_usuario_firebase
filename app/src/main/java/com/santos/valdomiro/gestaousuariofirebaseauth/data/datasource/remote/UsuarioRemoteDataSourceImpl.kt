@@ -1,6 +1,7 @@
 package com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.remote
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.UsuarioRemoteDataSource
 import com.santos.valdomiro.gestaousuariofirebaseauth.data.dto.UsuarioDocument
 import com.santos.valdomiro.gestaousuariofirebaseauth.data.mapper.toModel
@@ -8,7 +9,8 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class UsuarioRemoteDataSourceImpl @Inject constructor(
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val storage: FirebaseStorage
 ) : UsuarioRemoteDataSource {
     val usuarioCollection = "usuarios"
 
