@@ -33,9 +33,6 @@ fun LoginScreen(
     irParaCadastro: () -> Unit,
     irParaHome: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
-//    onLoginClick: (email: String, senha: String) -> Unit = { _, _ -> },
-//    onRecuperarSenhaClick: () -> Unit = {},
-//    onCadastrarClick: () -> Unit = {}
 ) {
     var email by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
@@ -56,6 +53,7 @@ fun LoginScreen(
                 // NÃO chame resetState aqui agora
                 Toast.makeText(context, "Logado com sucesso!", Toast.LENGTH_SHORT).show()
                 irParaHome()
+                viewModel.resetState()
             }
             is UiState.Error -> {}
             else -> {}
@@ -90,15 +88,8 @@ fun LoginScreen(
             onValueChange = {senha = it},
             placeHolder = stringResource(R.string.placeholder_senha),
             keyboardType = KeyboardType.Password,
-            visualTransformation = if (mostrarSenha) VisualTransformation.None else PasswordVisualTransformation(),
-            trailingIcon =  {
-                IconButton(onClick = { mostrarSenha = !mostrarSenha }) {
-                    Icon(
-                        imageVector = if (mostrarSenha) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                        contentDescription = if (mostrarSenha) "Esconder senha" else "Mostrar senha"
-                    )
-                }
-            }
+            mostrarSenha = mostrarSenha,
+            onvisibilidadeChange = { mostrarSenha = !mostrarSenha }
         )
 
         Row(
@@ -149,13 +140,5 @@ fun LoginScreen(
                 Text(text = stringResource(R.string.cadastrar))
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview() {
-    MaterialTheme {
-        LoginScreen({}, {})
     }
 }

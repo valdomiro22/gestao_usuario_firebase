@@ -10,5 +10,6 @@ interface AuthDataSource {
     suspend fun sendPasswordResetEmail(email: String)
     suspend fun updateEmailAddress(newEmail: String, password: String)
     suspend fun updatePassword(newPassword: String, currentPassword: String)
-    suspend fun deleteUser()
+    suspend fun deleteUser(currentPassword: String)
+    suspend fun getCurrentUserEmail(): String?
 }

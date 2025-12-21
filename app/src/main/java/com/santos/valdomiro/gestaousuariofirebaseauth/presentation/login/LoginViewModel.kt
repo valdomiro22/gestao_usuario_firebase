@@ -9,12 +9,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
+import com.santos.valdomiro.gestaousuariofirebaseauth.domain.usecase.SincronizarEmailUseCase
 import com.santos.valdomiro.gestaousuariofirebaseauth.utils.Util
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val logarUsuarioUseCase: LogarUsuarioUseCase
+    private val logarUsuarioUseCase: LogarUsuarioUseCase,
+    private val sincronizarEmailUseCase: SincronizarEmailUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState<String>>(UiState.Aguardando)
@@ -37,6 +39,7 @@ class LoginViewModel @Inject constructor(
             result
                 .onSuccess {
                     _uiState.value = UiState.Success(it)
+                    sincronizarEmailUseCase()
                 }
                 .onFailure { exception ->
                     val erroMapeado = when {

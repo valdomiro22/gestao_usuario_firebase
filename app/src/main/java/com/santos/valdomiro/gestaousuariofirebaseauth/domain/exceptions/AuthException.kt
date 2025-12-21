@@ -5,6 +5,9 @@ sealed class AuthException : Exception() {
     object SenhaFraca : AuthException()
     object EmailInvalido : AuthException()
     object ErroDeRede : AuthException()
+    object CredenciaisInvalidas : AuthException()
+    object UsuarioNaoEncontrado : AuthException()
+    object ReautenticacaoNecessaria : AuthException()
 
     data class Desconhecido(val erroOriginal: Throwable?) : AuthException()
 }

@@ -50,6 +50,7 @@ import java.util.Locale
 @Composable
 fun ConfiguracoesUsuarioScreen(
     irParaHome: () -> Unit,
+    irParaAlterarEmail: () -> Unit,
     viewModel: ConfiguracoesUsuarioViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -165,7 +166,8 @@ fun ConfiguracoesUsuarioScreen(
         ) {
             Button(
                 onClick = {
-                    Toast.makeText(context, "Alterar Email", Toast.LENGTH_SHORT).show()
+                    irParaAlterarEmail()
+//                    Toast.makeText(context, "Alterar Email", Toast.LENGTH_SHORT).show()
                 }
             ) {
                 Text(stringResource(R.string.alterar_email))

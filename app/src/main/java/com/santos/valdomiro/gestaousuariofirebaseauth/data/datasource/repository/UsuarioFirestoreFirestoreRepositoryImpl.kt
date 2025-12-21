@@ -1,5 +1,6 @@
 package com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.repository
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.UsuarioRemoteDataSource
 import com.santos.valdomiro.gestaousuariofirebaseauth.data.mapper.toDocument
@@ -10,6 +11,7 @@ import com.santos.valdomiro.gestaousuariofirebaseauth.domain.exceptions.NaoEncon
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.exceptions.ServicoIndisponivelException
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.model.Usuario
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.repository.UsuarioFirestoreRepository
+import com.santos.valdomiro.gestaousuariofirebaseauth.utils.Util
 import javax.inject.Inject
 
 class UsuarioFirestoreFirestoreRepositoryImpl @Inject constructor(
@@ -41,24 +43,72 @@ class UsuarioFirestoreFirestoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateUser(id: String, usuario: Usuario): Result<Unit> {
-        TODO("Not yet implemented")
+        return try {
+            usuarioDataSource.updateUser(id, usuario.toDocument())
+            Log.d(Util.TAG, "Update usuario chamado")
+            Result.success(Unit)
+        } catch (e: FirebaseFirestoreException) {
+            val exceptionMapeada = when (e.code) {
+                FirebaseFirestoreException.Code.PERMISSION_DENIED -> AcessoNegadoException(e)
+                FirebaseFirestoreException.Code.NOT_FOUND -> NaoEncontradoException(e)
+                FirebaseFirestoreException.Code.UNAVAILABLE -> ServicoIndisponivelException(e)
+                else -> ErroBancoDadosDesconhecidoException(e)
+            }
+            Result.failure(exceptionMapeada)
+        } catch (e: Exception) {
+            Result.failure(ErroBancoDadosDesconhecidoException(e))
+        }
     }
 
     override suspend fun getUser(id: String): Result<Usuario?> {
         return try {
             val usuarioDocument = usuarioDataSource.getUser(id)
-            val usuario = usuarioDocument?.toModel()
-            Result.success(usuario)
+            Result.success(usuarioDocument?.toModel())
+        } catch (e: FirebaseFirestoreException) {
+            val exceptionMapeada = when (e.code) {
+                FirebaseFirestoreException.Code.NOT_FOUND -> NaoEncontradoException(e)
+                FirebaseFirestoreException.Code.PERMISSION_DENIED -> AcessoNegadoException(e)
+                FirebaseFirestoreException.Code.UNAVAILABLE -> ServicoIndisponivelException(e)
+                else -> ErroBancoDadosDesconhecidoException(e)
+            }
+            Result.failure(exceptionMapeada)
         } catch (e: Exception) {
-            Result.failure(Exception("Erro ao recuperar usuario no Firestore: ${e.message}"))
+            Result.failure(ErroBancoDadosDesconhecidoException(e))
         }
     }
 
     override suspend fun deleteUser(id: String): Result<Unit> {
-        TODO("Not yet implemented")
+        return try {
+            usuarioDataSource.deleteUser(id)
+            Result.success(Unit)
+        } catch (e: FirebaseFirestoreException) {
+            val exceptionMapeada = when (e.code) {
+                FirebaseFirestoreException.Code.PERMISSION_DENIED -> AcessoNegadoException(e)
+                FirebaseFirestoreException.Code.NOT_FOUND -> NaoEncontradoException(e) // usuário já não existe
+                FirebaseFirestoreException.Code.UNAVAILABLE -> ServicoIndisponivelException(e)
+                else -> ErroBancoDadosDesconhecidoException(e)
+            }
+            Result.failure(exceptionMapeada)
+        } catch (e: Exception) {
+            Result.failure(ErroBancoDadosDesconhecidoException(e))
+        }
+
     }
 
     override suspend fun getAllUsers(): Result<List<Usuario>> {
-        TODO("Not yet implemented")
+        return try {
+            val listaDocument = usuarioDataSource.getAllUsers()
+            val listaModel = listaDocument.map { it.toModel() }
+            Result.success(listaModel)
+        } catch (e: FirebaseFirestoreException) {
+            val exceptionMapeada = when (e.code) {
+                FirebaseFirestoreException.Code.PERMISSION_DENIED -> AcessoNegadoException(e)
+                FirebaseFirestoreException.Code.UNAVAILABLE -> ServicoIndisponivelException(e)
+                else -> ErroBancoDadosDesconhecidoException(e)
+            }
+            Result.failure(exceptionMapeada)
+        } catch (e: Exception) {
+            Result.failure(ErroBancoDadosDesconhecidoException(e))
+        }
     }
 }

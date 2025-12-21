@@ -1,6 +1,7 @@
 package com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.remote
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.UsuarioRemoteDataSource
 import com.santos.valdomiro.gestaousuariofirebaseauth.data.dto.UsuarioDocument
@@ -10,7 +11,6 @@ import javax.inject.Inject
 
 class UsuarioRemoteDataSourceImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
-    private val storage: FirebaseStorage
 ) : UsuarioRemoteDataSource {
     val usuarioCollection = "usuarios"
 
@@ -28,10 +28,20 @@ class UsuarioRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun updateUser(id: String, usuario: UsuarioDocument) {
-        TODO("Not yet implemented")
+        if (id.isBlank()) {
+            throw IllegalArgumentException("ID do usuário não pode ser vazio")
+        }
+
+        firestore
+            .collection(usuarioCollection)
+            .document(id)
+            .set(usuario, SetOptions.merge())  // merge() → atualiza só os campos existentes, não apaga os outros
+            .await()
     }
 
     override suspend fun getUser(id: String): UsuarioDocument? {
+        if (id.isBlank()) return null
+
         val snapshot = firestore
             .collection(usuarioCollection)
             .document(id)
@@ -42,10 +52,25 @@ class UsuarioRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun deleteUser(id: String) {
-        TODO("Not yet implemented")
+        if (id.isBlank()) {
+            throw IllegalArgumentException("ID do usuário não pode ser vazio")
+        }
+
+        firestore
+            .collection(usuarioCollection)
+            .document(id)
+            .delete()
+            .await()
     }
 
     override suspend fun getAllUsers(): List<UsuarioDocument> {
-        TODO("Not yet implemented")
+        val snapshot = firestore
+            .collection(usuarioCollection)
+            .get()
+            .await()
+
+        return snapshot.documents.mapNotNull { doc ->
+            doc.toObject(UsuarioDocument::class.java)
+        }
     }
 }

@@ -20,41 +20,58 @@ class AuthDataSourceImpl @Inject constructor(
     override suspend fun login(email: String, password: String): Result<String> {
         return runCatching {
             val result = auth.signInWithEmailAndPassword(email, password).await()
-            result.user?.uid ?: throw Exception("Usuário nulo")
+            result.user?.uid ?: throw Exception("Usuário nulo após login")
         }
     }
 
     override suspend fun sendPasswordResetEmail(email: String) {
-        TODO("Not yet implemented")
+        auth.sendPasswordResetEmail(email).await()
     }
 
     override fun getCurrentUserId(): String? {
-        try {
-            val result = auth.currentUser
-            return result?.uid
-        } catch (e: Exception) {
-            throw Exception("Erro ao verificar usuario logado")
-        }
+        return auth.currentUser?.uid
     }
 
     override fun signOut() {
-        try {
-            auth.signOut()
-        } catch (e: Exception) {
-            throw Exception("Erro ao deslogar usuario: $e")
-        }
+        auth.signOut()
     }
 
     override suspend fun updateEmailAddress(newEmail: String, password: String) {
-        TODO("Not yet implemented")
+        val user = auth.currentUser ?: throw Exception("Nenhum usuário logado")
+
+        val credential = com.google.firebase.auth.EmailAuthProvider
+            .getCredential(user.email!!, password)
+        user.reauthenticate(credential).await()
+
+        user.verifyBeforeUpdateEmail(newEmail).await()
+        user.reload().await()
     }
 
     override suspend fun updatePassword(newPassword: String, currentPassword: String) {
-        TODO("Not yet implemented")
+        val user = auth.currentUser ?: throw Exception("Nenhum usuário logado")
+
+        val credential = com.google.firebase.auth.EmailAuthProvider
+            .getCredential(user.email!!, currentPassword)
+        user.reauthenticate(credential).await()
+
+        user.updatePassword(newPassword).await()
     }
 
-    override suspend fun deleteUser() {
-        TODO("Not yet implemented")
+    override suspend fun deleteUser(currentPassword: String) {
+        val user = auth.currentUser ?: throw Exception("Nenhum usuário logado")
+
+        // Reautentica o usuário com a senha atual
+        val credential = com.google.firebase.auth.EmailAuthProvider
+            .getCredential(user.email!!, currentPassword)
+
+        user.reauthenticate(credential).await()
+
+        // Agora deleta a conta
+        user.delete().await()
+    }
+
+    override suspend fun getCurrentUserEmail(): String? {
+        return auth.currentUser?.email
     }
 
 }

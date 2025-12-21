@@ -5,6 +5,7 @@
     <string name="cadastre_se">Cadastre-se</string>
     <string name="login">Login</string>
     <string name="logar">Logar</string>
+    <string name="atualizar">Atualizar</string>
     <string name="label_nome">Nome</string>
     <string name="placeholder_nome">João</string>
     <string name="label_sobrenome">Sobrenome</string>
@@ -26,4 +27,8 @@
 
     <!-- Configuracoes Screen -->
     <string name="excluir_conta">Excluir Conta</string>
+
+    <!-- Alterar Email Screen -->
+    <string name="guia_alterar_email">Digite o novo e-mail e a sua senha atual para confirmar</string>
+
 </resources>

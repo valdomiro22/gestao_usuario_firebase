@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.alteraremail.AlterarEmailScreen
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.cadastrarusuario.CadastrarUsuarioScreen
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.configuracoes.ConfiguracoesUsuarioScreen
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.home.HomeScreen
@@ -55,6 +56,18 @@ fun AppNavigation(navController: NavHostController, destino: String) {
         composable(AppRoutes.CONFIGURACOES) {
             ConfiguracoesUsuarioScreen(
                 irParaHome = {
+                    navController.popBackStack()
+                },
+
+                irParaAlterarEmail = {
+                    navController.navigate(AppRoutes.ALTERAR_EMAIL)
+                },
+            )
+        }
+
+        composable(AppRoutes.ALTERAR_EMAIL) {
+            AlterarEmailScreen(
+                irParaConfiguracoes = {
                     navController.popBackStack()
                 }
             )
