@@ -24,7 +24,8 @@ fun CustomOutlinedTextFieldSenha(
     placeHolder: String,
     keyboardType: KeyboardType,
     mostrarSenha: Boolean,
-    onvisibilidadeChange: () -> Unit
+    onvisibilidadeChange: () -> Unit,
+    icone: @Composable (() -> Unit)? = null
 ) {
     OutlinedTextField(
         value = value,
@@ -35,6 +36,7 @@ fun CustomOutlinedTextFieldSenha(
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         shape = RoundedCornerShape(12.dp),
         visualTransformation = if (mostrarSenha) VisualTransformation.None else PasswordVisualTransformation(),
+        leadingIcon = icone,
         trailingIcon = {
             IconButton(onClick = onvisibilidadeChange) {
                 Icon(

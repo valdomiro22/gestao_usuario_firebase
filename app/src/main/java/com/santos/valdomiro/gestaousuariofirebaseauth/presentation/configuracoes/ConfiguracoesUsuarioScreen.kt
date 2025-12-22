@@ -51,6 +51,7 @@ import java.util.Locale
 fun ConfiguracoesUsuarioScreen(
     irParaHome: () -> Unit,
     irParaAlterarEmail: () -> Unit,
+    irParaAlterarSenha: () -> Unit,
     viewModel: ConfiguracoesUsuarioViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -165,18 +166,13 @@ fun ConfiguracoesUsuarioScreen(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Button(
-                onClick = {
-                    irParaAlterarEmail()
-//                    Toast.makeText(context, "Alterar Email", Toast.LENGTH_SHORT).show()
-                }
+                onClick = { irParaAlterarEmail() }
             ) {
                 Text(stringResource(R.string.alterar_email))
             }
 
             Button(
-                onClick = {
-                    Toast.makeText(context, "Alterar Senha", Toast.LENGTH_SHORT).show()
-                }
+                onClick = { irParaAlterarSenha() }
             ) {
                 Text(stringResource(R.string.alterar_senha))
             }

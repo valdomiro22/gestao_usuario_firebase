@@ -1,20 +1,29 @@
 <resources>
-    <string name="app_name">GestaoUsuarioFirebaseAuth</string>
+    <!-- Geral -->
+    <string name="app_name">Gestao Usuario FirebaseAuth</string>
     <string name="cadastro">Cadastro</string>
     <string name="cadastrar">Cadastrar</string>
     <string name="cadastre_se">Cadastre-se</string>
+    <string name="atualizar">Atualizar</string>
     <string name="login">Login</string>
     <string name="logar">Logar</string>
-    <string name="atualizar">Atualizar</string>
-    <string name="label_nome">Nome</string>
-    <string name="placeholder_nome">João</string>
-    <string name="label_sobrenome">Sobrenome</string>
-    <string name="placeholder_sobrenome">Santos</string>
-    <string name="label_email">Email</string>
-    <string name="placeholder_email">joao.santos@test.com</string>
+
+    <!-- Label -->
     <string name="laber_senha">Senha</string>
-    <string name="placeholder_senha">Ex: fiT%s32d</string>
     <string name="laber_confirmar_senha">Confirmar Senha</string>
+    <string name="label_nome">Nome</string>
+    <string name="label_sobrenome">Sobrenome</string>
+    <string name="label_email">Email</string>
+
+    <!-- Placeholder -->
+    <string name="placeholder_nome">João</string>
+    <string name="placeholder_email">joao.santos@test.com</string>
+    <string name="placeholder_senha">Ex: fiT%s32d</string>
+    <string name="placeholder_sobrenome">Santos</string>
+    <string name="placeholder_novo_email">Novo e-mail</string>
+    <string name="placeholder_nova_senha">Nova senha</string>
+    <string name="placeholder_senha_atual">Senha atual</string>
+    <string name="placeholder_confirmar_nova_senha">Confirme a nova senha</string>
 
     <!-- Cadastro Screen -->
     <string name="info_ja_tem_conta">Já possui uma conta?</string>
@@ -30,5 +39,8 @@
 
     <!-- Alterar Email Screen -->
     <string name="guia_alterar_email">Digite o novo e-mail e a sua senha atual para confirmar</string>
+
+    <!-- Alterar Email Screen -->
+    <string name="guia_alterar_senha">Digite a senha atual e a nova senha. A nova não deve ser igual a anterior</string>
 
 </resources>

@@ -1,9 +1,10 @@
 package com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.remote
 
+import android.util.Log
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.AuthDataSource
-import com.santos.valdomiro.gestaousuariofirebaseauth.data.dto.UsuarioDocument
+import com.santos.valdomiro.gestaousuariofirebaseauth.utils.Util
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -49,24 +50,23 @@ class AuthDataSourceImpl @Inject constructor(
 
     override suspend fun updatePassword(newPassword: String, currentPassword: String) {
         val user = auth.currentUser ?: throw Exception("Nenhum usuário logado")
+        val email = user.email ?: throw Exception("Email não encontrado")
 
-        val credential = com.google.firebase.auth.EmailAuthProvider
-            .getCredential(user.email!!, currentPassword)
+        val credential = EmailAuthProvider.getCredential(email, currentPassword)
+
         user.reauthenticate(credential).await()
-
         user.updatePassword(newPassword).await()
+
+        user.getIdToken(true).await()
     }
 
     override suspend fun deleteUser(currentPassword: String) {
         val user = auth.currentUser ?: throw Exception("Nenhum usuário logado")
 
-        // Reautentica o usuário com a senha atual
         val credential = com.google.firebase.auth.EmailAuthProvider
             .getCredential(user.email!!, currentPassword)
 
         user.reauthenticate(credential).await()
-
-        // Agora deleta a conta
         user.delete().await()
     }
 
