@@ -32,6 +32,7 @@ import com.santos.valdomiro.gestaousuariofirebaseauth.ui.theme.Dimens
 fun LoginScreen(
     irParaCadastro: () -> Unit,
     irParaHome: () -> Unit,
+    irParaRecuperarSenha: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     var email by remember { mutableStateOf("") }
@@ -50,10 +51,7 @@ fun LoginScreen(
     LaunchedEffect(state) {
         when (state) {
             is UiState.Success -> {
-                // NÃO chame resetState aqui agora
-                Toast.makeText(context, "Logado com sucesso!", Toast.LENGTH_SHORT).show()
                 irParaHome()
-                viewModel.resetState()
             }
             is UiState.Error -> {}
             else -> {}
@@ -104,7 +102,7 @@ fun LoginScreen(
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .padding(top = 8.dp)
-                    .clickable { }
+                    .clickable { irParaRecuperarSenha() }
             )
         }
 
@@ -113,6 +111,7 @@ fun LoginScreen(
         Button(
             onClick = {
                 viewModel.logar(email, senha)
+                viewModel.resetState()
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {

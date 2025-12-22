@@ -10,6 +10,7 @@ import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.cadastrarusua
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.configuracoes.ConfiguracoesUsuarioScreen
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.home.HomeScreen
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.login.LoginScreen
+import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.recuperarsenha.RecuperarSenhaScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController, destino: String) {
@@ -28,6 +29,10 @@ fun AppNavigation(navController: NavHostController, destino: String) {
                     navController.navigate(AppRoutes.HOME) {
                         popUpTo(AppRoutes.LOGIN) { inclusive = true }
                     }
+                },
+
+                irParaRecuperarSenha = {
+                    navController.navigate(AppRoutes.RECUPERAR_SENHA)
                 }
             )
         }
@@ -81,6 +86,14 @@ fun AppNavigation(navController: NavHostController, destino: String) {
         composable(AppRoutes.ALTERAR_SENHA) {
             AlterarSenhaScreen(
                 irParaConfiguracoes = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable(AppRoutes.RECUPERAR_SENHA) {
+            RecuperarSenhaScreen(
+                irParaLogin = {
                     navController.popBackStack()
                 }
             )

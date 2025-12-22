@@ -8,4 +8,5 @@ object AppRoutes {
     const val CONFIGURACOES = "configuracoes"
     const val ALTERAR_EMAIL = "alterar-email"
     const val ALTERAR_SENHA = "alterar-senha"
+    const val RECUPERAR_SENHA = "recuperar-senha"
 }

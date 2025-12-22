@@ -11,8 +11,6 @@ class UpdateEmailUseCase @Inject constructor(
 
     suspend operator fun invoke(newEmail: String, currentPassword: String): Result<Unit> {
         return try {
-            // Apenas tenta enviar o email de verificação
-            // Não toca no Firestore aqui!
             val result = authRepository.updateEmailAddress(newEmail, currentPassword)
 
             if (result.isSuccess) {
