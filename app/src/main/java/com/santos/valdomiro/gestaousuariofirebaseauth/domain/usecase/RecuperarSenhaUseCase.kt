@@ -9,7 +9,7 @@ class RecuperarSenhaUseCase @Inject constructor(
 
     suspend operator fun invoke(email: String): Result<Unit> {
         return try {
-            val result = authRepository.sendPasswordResetEmail(email)
+            authRepository.sendPasswordResetEmail(email)
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)

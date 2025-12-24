@@ -1,0 +1,96 @@
+package com.santos.valdomiro.gestaousuariofirebaseauth.presentation.components
+
+import android.graphics.drawable.Icon
+import android.widget.Toast
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material3.*
+import androidx.compose.material3.SegmentedButtonDefaults.Icon
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.configuracoes.ConfiguracoesUsuarioViewModel
+
+@Composable
+fun CustomAlertDialogExample(
+    onCancel: () -> Unit,
+    onConfirm: () -> Unit,
+    viewModel: ConfiguracoesUsuarioViewModel? = null
+) {
+
+    var showDialog by remember { mutableStateOf(false) }
+    var senhaVisivel by remember { mutableStateOf(false) }
+    var email by remember { mutableStateOf("") }
+    var senha by remember { mutableStateOf("") }
+    val context = LocalContext.current
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                "Confirme sua identidade",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                style = MaterialTheme.typography.headlineSmall,
+            )
+            Spacer(Modifier.height(10.dp))
+
+            Text("Para escluir a conta, confirme sua identidade, digite o email e senha novamente",)
+
+            Spacer(Modifier.height(8.dp))
+
+            CustomOutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                placeHolder = "Email",
+                keyboardType = KeyboardType.Email,
+                icone = { Icon(Icons.Default.Email, contentDescription = null) }
+            )
+
+            Spacer(Modifier.height(8.dp))
+
+            CustomOutlinedTextFieldSenha(
+                value = senha,
+                onValueChange = { senha = it },
+                placeHolder = "Senha",
+                keyboardType = KeyboardType.Password,
+                mostrarSenha = senhaVisivel,
+                onvisibilidadeChange = { senhaVisivel = !senhaVisivel },
+                icone = { Icon(Icons.Default.Lock, contentDescription = null) }
+            )
+
+            Spacer(Modifier.height(16.dp))
+
+            Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
+                Button(onClick = {
+                    Toast.makeText(context, "Cancelar", Toast.LENGTH_SHORT).show()
+                    showDialog = false
+                }) {
+                    Text("Cancelar")
+                }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                TextButton(onClick = {
+                    viewModel?.deletarUsuario(email = email, password = senha)
+                    showDialog = false
+                }) {
+                    Text("Excluir")
+                }
+            }
+        }
+    }
+}

@@ -110,9 +110,9 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteUser(currentPassword: String): Result<Unit> {
+    override suspend fun deleteUser(email: String, currentPassword: String): Result<Unit> {
         return try {
-            authDataSource.deleteUser(currentPassword)
+            authDataSource.deleteUser(email = email, currentPassword = currentPassword)
             Result.success(Unit)
         } catch (e: FirebaseAuthRecentLoginRequiredException) {
             Result.failure(AuthException.ReautenticacaoNecessaria)

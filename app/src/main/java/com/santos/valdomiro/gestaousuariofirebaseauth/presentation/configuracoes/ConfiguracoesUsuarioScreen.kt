@@ -20,6 +20,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,13 +33,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.santos.valdomiro.gestaousuariofirebaseauth.R
+import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.common.UiState
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.components.CampoImagemAlteravel
+import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.components.CustomAlertDialogExample
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.components.CustomOutlinedTextField
 import com.santos.valdomiro.gestaousuariofirebaseauth.ui.theme.Dimens
 import com.santos.valdomiro.gestaousuariofirebaseauth.utils.Util
@@ -50,17 +55,41 @@ import java.util.Locale
 @Composable
 fun ConfiguracoesUsuarioScreen(
     irParaHome: () -> Unit,
+    irParaLogin: () -> Unit,
     irParaAlterarEmail: () -> Unit,
     irParaAlterarSenha: () -> Unit,
     viewModel: ConfiguracoesUsuarioViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-
+    var showDialog by remember { mutableStateOf(false) }
     var nome by remember { mutableStateOf("") }
     var sobrenome by remember { mutableStateOf("") }
     val cameraPermission = rememberPermissionState(Manifest.permission.CAMERA)
 
     var photoUri by remember { mutableStateOf<Uri?>(null) }
+
+    val fotoState by viewModel.atualizarFotoState.collectAsState()
+    val contaState by viewModel.deletarContaState.collectAsState()
+
+    LaunchedEffect(fotoState) {
+        when (fotoState) {
+            is UiState.Success -> {
+                Toast.makeText(context, "Foto atualizada", Toast.LENGTH_SHORT).show()
+            }
+            is UiState.Error -> {}
+            else -> {}
+        }
+    }
+
+    LaunchedEffect(contaState) {
+        when (contaState) {
+            is UiState.Success -> {
+                irParaLogin()
+            }
+            is UiState.Error -> {}
+            else -> {}
+        }
+    }
 
     val takePictureLaucher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
@@ -72,6 +101,7 @@ fun ConfiguracoesUsuarioScreen(
             Log.d(Util.TAG, "Foto cancelada ou falhou")
         }
     }
+
 
     fun createImageUri(): Uri {
         val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
@@ -181,11 +211,22 @@ fun ConfiguracoesUsuarioScreen(
         Spacer(modifier = Modifier.height(Dimens.EspacamentoG))
 
         Button(
-            onClick = {
-                Toast.makeText(context, "Excluir conta", Toast.LENGTH_SHORT).show()
-            }
+            onClick = { showDialog = true }
         ) {
             Text("Excluir Conta")
+        }
+
+        if (showDialog) {
+            Dialog(onDismissRequest = { showDialog = false }) {
+                CustomAlertDialogExample(
+                    onCancel = { showDialog = false },
+                    onConfirm = {
+                        println("Conta excluída!")
+                        showDialog = false
+                    },
+                    viewModel = viewModel
+                )
+            }
         }
     }
 }

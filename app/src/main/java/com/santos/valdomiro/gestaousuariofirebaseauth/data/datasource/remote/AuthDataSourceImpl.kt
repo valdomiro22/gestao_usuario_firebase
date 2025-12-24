@@ -60,7 +60,7 @@ class AuthDataSourceImpl @Inject constructor(
         user.getIdToken(true).await()
     }
 
-    override suspend fun deleteUser(currentPassword: String) {
+    override suspend fun deleteUser(email: String, currentPassword: String) {
         val user = auth.currentUser ?: throw Exception("Nenhum usuário logado")
 
         val credential = com.google.firebase.auth.EmailAuthProvider

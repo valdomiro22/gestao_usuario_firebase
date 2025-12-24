@@ -72,6 +72,13 @@ fun AppNavigation(navController: NavHostController, destino: String) {
                 irParaAlterarSenha = {
                     navController.navigate(AppRoutes.ALTERAR_SENHA)
                 },
+
+                irParaLogin = {
+                    navController.navigate(AppRoutes.LOGIN) {
+                        popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                },
             )
         }
 
