@@ -65,8 +65,6 @@ fun ConfiguracoesUsuarioScreen(
     val context = LocalContext.current
     var showDialogExcluirConta by remember { mutableStateOf(false) }
     var showDialogEditarNome by remember { mutableStateOf(false) }
-    var nome by remember { mutableStateOf("") }
-    var sobrenome by remember { mutableStateOf("") }
     val cameraPermission = rememberPermissionState(Manifest.permission.CAMERA)
 
     var photoUri by remember { mutableStateOf<Uri?>(null) }
@@ -82,6 +80,7 @@ fun ConfiguracoesUsuarioScreen(
         when (atualizarFotoState) {
             is UiState.Success -> {
                 Toast.makeText(context, "Foto atualizada", Toast.LENGTH_SHORT).show()
+                viewModel.recuperarUsuario()
             }
             is UiState.Error -> {}
             else -> {}
@@ -102,6 +101,7 @@ fun ConfiguracoesUsuarioScreen(
         when (atualizarNomeState) {
             is UiState.Success -> {
                 Toast.makeText(context, "Nome alterado", Toast.LENGTH_SHORT).show()
+                viewModel.recuperarUsuario()
             }
             is UiState.Error -> {}
             else -> {}
@@ -148,7 +148,7 @@ fun ConfiguracoesUsuarioScreen(
         Spacer(modifier = Modifier.height(Dimens.EspacamentoG))
 
         CampoImagemAlteravel(
-            photoUrl = "https://images.unsplash.com/photo-1761839258513-099c3121d72d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            photoUrl = usuario?.fotoUrl,
             onClick = {
                 if (cameraPermission.status.isGranted) {
                     val uri = createImageUri()
