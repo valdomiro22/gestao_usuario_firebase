@@ -11,7 +11,7 @@ import com.santos.valdomiro.gestaousuariofirebaseauth.domain.exceptions.NaoEncon
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.exceptions.ServicoIndisponivelException
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.model.Usuario
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.repository.UsuarioFirestoreRepository
-import com.santos.valdomiro.gestaousuariofirebaseauth.utils.Util
+import com.santos.valdomiro.gestaousuariofirebaseauth.utils.TAG
 import javax.inject.Inject
 
 class UsuarioFirestoreFirestoreRepositoryImpl @Inject constructor(
@@ -45,7 +45,7 @@ class UsuarioFirestoreFirestoreRepositoryImpl @Inject constructor(
     override suspend fun updateUser(id: String, usuario: Usuario): Result<Unit> {
         return try {
             usuarioDataSource.updateUser(id, usuario.toDocument())
-            Log.d(Util.TAG, "Update usuario chamado")
+            Log.d(TAG, "Update usuario chamado")
             Result.success(Unit)
         } catch (e: FirebaseFirestoreException) {
             val exceptionMapeada = when (e.code) {

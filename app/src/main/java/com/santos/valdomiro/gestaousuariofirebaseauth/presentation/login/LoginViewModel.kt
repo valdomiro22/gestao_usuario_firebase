@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.usecase.SincronizarEmailUseCase
-import com.santos.valdomiro.gestaousuariofirebaseauth.utils.Util
 import kotlinx.coroutines.launch
 
 @HiltViewModel

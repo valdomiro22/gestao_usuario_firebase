@@ -3,8 +3,12 @@ package com.santos.valdomiro.gestaousuariofirebaseauth.presentation.configuracoe
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.santos.valdomiro.gestaousuariofirebaseauth.domain.model.Usuario
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.repository.AuthRepository
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.usecase.DeleteUserUseCase
+import com.santos.valdomiro.gestaousuariofirebaseauth.domain.usecase.GetCurrentUserUseCase
+import com.santos.valdomiro.gestaousuariofirebaseauth.domain.usecase.UpdateNomeUsuarioUseCase
 import com.santos.valdomiro.gestaousuariofirebaseauth.domain.usecase.UpdatePhotoProfileUseCase
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +21,9 @@ import javax.inject.Inject
 class ConfiguracoesUsuarioViewModel @Inject constructor(
     private val updatePhotoProfileUseCase: UpdatePhotoProfileUseCase,
     private val deleteUserUseCase: DeleteUserUseCase,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
+    private val updateName: UpdateNomeUsuarioUseCase
 ) : ViewModel() {
 
     private val _atualizarFotoState = MutableStateFlow<UiState<Unit>>(UiState.Aguardando)
@@ -25,6 +31,16 @@ class ConfiguracoesUsuarioViewModel @Inject constructor(
 
     private val _deletarContaState = MutableStateFlow<UiState<Unit>>(UiState.Aguardando)
     val deletarContaState = _deletarContaState.asStateFlow()
+
+    private val _recuperarUsuarioState = MutableStateFlow<UiState<Usuario>>(UiState.Aguardando)
+    val recuperarUsuarioState = _recuperarUsuarioState.asStateFlow()
+
+    private val _alterarNomeState = MutableStateFlow<UiState<Unit>>(UiState.Aguardando)
+    val alterarNomeState = _alterarNomeState.asStateFlow()
+
+    init {
+        recuperarUsuario()
+    }
 
     fun atualizarFoto(fileUri: Uri) {
         val uid = authRepository.getCurrentUserId()
@@ -44,9 +60,29 @@ class ConfiguracoesUsuarioViewModel @Inject constructor(
         }
     }
 
+    fun alterarNome(uid: String, novoNome: String, novoSobrenome: String) {
+        if (uid.isBlank()) {
+            _alterarNomeState.value = UiState.Error("Digite o ID")
+            return
+        } else if (novoNome.isBlank()) {
+            _alterarNomeState.value = UiState.Error("Digite o nome")
+            return
+        } else if (novoSobrenome.isBlank()) {
+            _alterarNomeState.value = UiState.Error("Digite o sobrenome")
+            return
+        }
+
+        viewModelScope.launch {
+            _alterarNomeState.value = UiState.Loading
+
+            val result = updateName(uid = uid, novoNome = novoNome, novoSobrenome = novoSobrenome)
+            result.onSuccess { _alterarNomeState.value = UiState.Success(Unit) }
+                .onFailure { _alterarNomeState.value = UiState.Error(it.message ?: "Erro ao alterar nome de usuario") }
+        }
+
+    }
+
     fun deletarUsuario(email: String, password: String) {
-
-
         if (email.isBlank()) {
             _deletarContaState.value = UiState.Error("UID inválido")
             return
@@ -62,6 +98,23 @@ class ConfiguracoesUsuarioViewModel @Inject constructor(
 
             result.onSuccess { _deletarContaState.value = UiState.Success(Unit) }
                 .onFailure { _deletarContaState.value = UiState.Error(it.message ?: "Erro ao deletar usuario") }
+        }
+    }
+
+    fun recuperarUsuario() {
+        viewModelScope.launch {
+            _recuperarUsuarioState.value = UiState.Loading
+            val result = getCurrentUserUseCase()
+
+            result.onSuccess { usuario ->
+                if (usuario != null) {
+                    _recuperarUsuarioState.value = UiState.Success<Usuario>(usuario)
+                } else {
+                    _recuperarUsuarioState.value = UiState.Error("Usuário não encontrado")
+                }
+            }.onFailure { error ->
+                _recuperarUsuarioState.value = UiState.Error(error.message ?: "Erro ao recuperar usuario")
+            }
         }
     }
 

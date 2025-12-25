@@ -1,6 +1,5 @@
 package com.santos.valdomiro.gestaousuariofirebaseauth.presentation.components
 
-import android.graphics.drawable.Icon
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -8,27 +7,22 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.*
-import androidx.compose.material3.SegmentedButtonDefaults.Icon
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.santos.valdomiro.gestaousuariofirebaseauth.presentation.configuracoes.ConfiguracoesUsuarioViewModel
 
 @Composable
-fun CustomAlertDialogExample(
+fun DialogExcluirConta(
     onCancel: () -> Unit,
     onConfirm: () -> Unit,
     viewModel: ConfiguracoesUsuarioViewModel? = null
 ) {
 
-    var showDialog by remember { mutableStateOf(false) }
     var senhaVisivel by remember { mutableStateOf(false) }
     var email by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
@@ -75,10 +69,7 @@ fun CustomAlertDialogExample(
             Spacer(Modifier.height(16.dp))
 
             Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
-                Button(onClick = {
-                    Toast.makeText(context, "Cancelar", Toast.LENGTH_SHORT).show()
-                    showDialog = false
-                }) {
+                Button(onClick = onCancel) {
                     Text("Cancelar")
                 }
 
@@ -86,7 +77,7 @@ fun CustomAlertDialogExample(
 
                 TextButton(onClick = {
                     viewModel?.deletarUsuario(email = email, password = senha)
-                    showDialog = false
+                    onConfirm()
                 }) {
                     Text("Excluir")
                 }

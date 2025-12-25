@@ -4,7 +4,6 @@ import android.util.Log
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.santos.valdomiro.gestaousuariofirebaseauth.data.datasource.AuthDataSource
-import com.santos.valdomiro.gestaousuariofirebaseauth.utils.Util
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
