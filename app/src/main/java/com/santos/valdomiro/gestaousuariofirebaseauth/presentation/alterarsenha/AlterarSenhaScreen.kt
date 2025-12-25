@@ -54,7 +54,6 @@ fun AlterarSenhaScreen(
         when (state) {
             is UiState.Success -> {
                 irParaConfiguracoes()
-                viewModel.resetState()
             }
             is UiState.Error -> {
 
@@ -126,6 +125,7 @@ fun AlterarSenhaScreen(
                     novaSenha = novaSenha,
                     confirmarNovaSenha = confirmeNovaSenha
                 )
+                viewModel.resetState()
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {

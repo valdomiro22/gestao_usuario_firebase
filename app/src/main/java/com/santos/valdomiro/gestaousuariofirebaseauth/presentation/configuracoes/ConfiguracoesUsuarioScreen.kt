@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -160,6 +161,15 @@ fun ConfiguracoesUsuarioScreen(
             }
         )
 
+        Spacer(modifier = Modifier.height(Dimens.EspacamentoMM))
+
+        if (atualizarFotoState == UiState.Loading) {
+            Spacer(modifier = Modifier.height(Dimens.EspacamentoG))
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+        }
+
         Spacer(modifier = Modifier.height(Dimens.EspacamentoG))
 
         Row(
@@ -189,6 +199,15 @@ fun ConfiguracoesUsuarioScreen(
         Text(
             usuario?.email ?: "",
         )
+
+        Spacer(modifier = Modifier.height(Dimens.EspacamentoMM))
+
+        if (atualizarNomeState == UiState.Loading) {
+            Spacer(modifier = Modifier.height(Dimens.EspacamentoG))
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+        }
 
         Spacer(modifier = Modifier.height(Dimens.EspacamentoG))
 
@@ -222,7 +241,6 @@ fun ConfiguracoesUsuarioScreen(
         ) {
             Text("Excluir Conta")
         }
-
         if (showDialogExcluirConta) {
             Dialog(onDismissRequest = { showDialogExcluirConta = false }) {
                 DialogExcluirConta(
@@ -231,6 +249,13 @@ fun ConfiguracoesUsuarioScreen(
                     viewModel = viewModel
                 )
             }
+        }
+
+        if (deletarContaState == UiState.Loading) {
+            Spacer(modifier = Modifier.height(Dimens.EspacamentoG))
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
         }
     }
 }

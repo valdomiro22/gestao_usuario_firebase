@@ -45,7 +45,6 @@ fun AlterarEmailScreen(
         when (state) {
             is UiState.Success -> {
                 irParaConfiguracoes()
-                viewModel.resetState()
             }
             is UiState.Error -> {
 
@@ -95,7 +94,10 @@ fun AlterarEmailScreen(
         Spacer(modifier = Modifier.height(Dimens.EspacamentoG))
 
         Button(
-            onClick = { viewModel.alterarEmail(email, senha) },
+            onClick = {
+                viewModel.alterarEmail(email, senha)
+                viewModel.resetState()
+            },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
             Text(stringResource(R.string.atualizar))
